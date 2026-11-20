@@ -344,17 +344,16 @@ export function PreviewPlayer({
                 : "Pure HTML + CSS animation · use it on a site or as a reference for an AI agent"}
             </p>
           </div>
-          <div className="w-full sm:w-64">
-            <SegmentedButton
-              label="Export as"
-              value={output}
-              onValueChange={setOutput}
-              options={[
-                { value: "video", label: "Video", disabled: recording },
-                { value: "code", label: "HTML + CSS", disabled: recording },
-              ]}
-            />
-          </div>
+          <SegmentedButton
+            fit
+            label="Export as"
+            value={output}
+            onValueChange={setOutput}
+            options={[
+              { value: "video", label: "Video", disabled: recording },
+              { value: "code", label: "HTML + CSS", disabled: recording },
+            ]}
+          />
         </div>
 
         <div className="flex flex-wrap items-center justify-end gap-3">
@@ -367,14 +366,13 @@ export function PreviewPlayer({
             ) : (
               <>
                 {formats.length > 1 && format && (
-                  <div className="w-44">
-                    <SegmentedButton
-                      label="Video format"
-                      value={format.ext}
-                      onValueChange={(v) => setFormatExt(v)}
-                      options={formats.map((f) => ({ value: f.ext, label: f.label, disabled: recording }))}
-                    />
-                  </div>
+                  <SegmentedButton
+                    fit
+                    label="Video format"
+                    value={format.ext}
+                    onValueChange={(v) => setFormatExt(v)}
+                    options={formats.map((f) => ({ value: f.ext, label: f.label, disabled: recording }))}
+                  />
                 )}
                 {recording ? (
                   <Button variant="outlined" onClick={() => abortRef.current?.abort()}>
@@ -390,17 +388,16 @@ export function PreviewPlayer({
             )
           ) : (
             <>
-              <div className="w-56">
-                <SegmentedButton
-                  label="Code package"
-                  value={pkg}
-                  onValueChange={setPkg}
-                  options={[
-                    { value: "zip", label: "Files (.zip)" },
-                    { value: "single", label: "One .html" },
-                  ]}
-                />
-              </div>
+              <SegmentedButton
+                fit
+                label="Code package"
+                value={pkg}
+                onValueChange={setPkg}
+                options={[
+                  { value: "zip", label: "Files (.zip)" },
+                  { value: "single", label: "One .html" },
+                ]}
+              />
               <Button onClick={startCodeExport} disabled={empty || codeBusy}>
                 <CodeIcon size={18} />
                 {codeBusy ? "Building…" : "Export code"}

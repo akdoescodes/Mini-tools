@@ -23,7 +23,10 @@ export function SegmentedButton<T extends string>({
   onValueChange,
   options,
   className,
+  fit = false,
 }: {
+  /** Shrink to the labels instead of filling the row */
+  fit?: boolean;
   /** Accessible group name */
   label: string;
   value: T;
@@ -36,7 +39,11 @@ export function SegmentedButton<T extends string>({
       aria-label={label}
       value={value}
       onValueChange={(v) => onValueChange(v as T)}
-      className={cn("flex w-full overflow-hidden rounded-full border border-outline", className)}
+      className={cn(
+        "flex max-w-full overflow-hidden rounded-full border border-outline",
+        fit ? "w-fit" : "w-full",
+        className,
+      )}
     >
       {options.map((o) => (
         <Radio.Root
@@ -44,7 +51,8 @@ export function SegmentedButton<T extends string>({
           value={o.value}
           disabled={o.disabled}
           className={cn(
-            "state-layer flex h-10 min-w-0 flex-1 cursor-pointer items-center justify-center gap-1.5 px-3 type-label-lg whitespace-nowrap text-on-surface select-none",
+            "state-layer flex h-10 cursor-pointer items-center justify-center gap-1.5 type-label-lg whitespace-nowrap text-on-surface select-none",
+            fit ? "flex-none px-4" : "min-w-0 flex-1 px-3",
             "border-l border-outline first:border-l-0",
             "transition-colors duration-short4 data-checked:bg-secondary-container data-checked:text-on-secondary-container",
             "focus-visible:-outline-offset-(--app-focus-ring-width) data-disabled:cursor-not-allowed data-disabled:opacity-(--md-sys-state-disabled-opacity)",

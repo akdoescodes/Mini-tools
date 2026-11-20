@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   reactCompiler: true,
+  experimental: {
+    // Run the React Compiler natively in Turbopack instead of in Babel
+    // worker processes (those ran out of memory on this machine).
+    turbopackRustReactCompiler: true,
+  },
   turbopack: {
     rules: {
       "*.css": {

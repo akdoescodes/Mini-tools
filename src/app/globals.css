@@ -1,26 +1,383 @@
 @import "tailwindcss";
+@import "../theme/theme.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ═══════════════════════════════════════════════════════════════════════
+   Design-system plumbing: exposes theme tokens (src/theme/theme.css) as
+   Tailwind utilities. Edit values in theme.css, not here.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Only token colours exist: no stray bg-red-500 etc. */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colour roles → bg-*, text-*, border-*, ring-*, fill-* … */
+  --color-primary: var(--md-sys-color-primary);
+  --color-on-primary: var(--md-sys-color-on-primary);
+  --color-primary-container: var(--md-sys-color-primary-container);
+  --color-on-primary-container: var(--md-sys-color-on-primary-container);
+  --color-inverse-primary: var(--md-sys-color-inverse-primary);
+  --color-secondary: var(--md-sys-color-secondary);
+  --color-on-secondary: var(--md-sys-color-on-secondary);
+  --color-secondary-container: var(--md-sys-color-secondary-container);
+  --color-on-secondary-container: var(--md-sys-color-on-secondary-container);
+  --color-tertiary: var(--md-sys-color-tertiary);
+  --color-on-tertiary: var(--md-sys-color-on-tertiary);
+  --color-tertiary-container: var(--md-sys-color-tertiary-container);
+  --color-on-tertiary-container: var(--md-sys-color-on-tertiary-container);
+  --color-info: var(--md-sys-color-info);
+  --color-info-container: var(--md-sys-color-info-container);
+  --color-on-info-container: var(--md-sys-color-on-info-container);
+  --color-error: var(--md-sys-color-error);
+  --color-on-error: var(--md-sys-color-on-error);
+  --color-error-container: var(--md-sys-color-error-container);
+  --color-on-error-container: var(--md-sys-color-on-error-container);
+  --color-surface: var(--md-sys-color-surface);
+  --color-surface-dim: var(--md-sys-color-surface-dim);
+  --color-surface-bright: var(--md-sys-color-surface-bright);
+  --color-surface-container-lowest: var(--md-sys-color-surface-container-lowest);
+  --color-surface-container-low: var(--md-sys-color-surface-container-low);
+  --color-surface-container: var(--md-sys-color-surface-container);
+  --color-surface-container-high: var(--md-sys-color-surface-container-high);
+  --color-surface-container-highest: var(--md-sys-color-surface-container-highest);
+  --color-on-surface: var(--md-sys-color-on-surface);
+  --color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --color-outline: var(--md-sys-color-outline);
+  --color-outline-variant: var(--md-sys-color-outline-variant);
+  --color-inverse-surface: var(--md-sys-color-inverse-surface);
+  --color-inverse-on-surface: var(--md-sys-color-inverse-on-surface);
+  --color-scrim: var(--md-sys-color-scrim);
+
+  /* Fonts → font-brand, font-plain (font-sans = plain) */
+  --font-brand: var(--md-ref-typeface-brand);
+  --font-plain: var(--md-ref-typeface-plain);
+  --font-sans: var(--md-ref-typeface-plain);
+
+  /* Shape → rounded-xs … rounded-4xl */
+  --radius-xs: var(--md-sys-shape-corner-extra-small);
+  --radius-sm: var(--md-sys-shape-corner-small);
+  --radius-md: var(--md-sys-shape-corner-medium);
+  --radius-lg: var(--md-sys-shape-corner-large);
+  --radius-xl: var(--md-sys-shape-corner-large-increased);
+  --radius-2xl: var(--md-sys-shape-corner-extra-large);
+  --radius-3xl: var(--md-sys-shape-corner-extra-large-increased);
+  --radius-4xl: var(--md-sys-shape-corner-extra-extra-large);
+
+  /* Elevation → shadow-elevation-1 … 5, shadow-soft, shadow-float, shadow-stage */
+  --shadow-elevation-1: var(--md-sys-elevation-level1);
+  --shadow-elevation-2: var(--md-sys-elevation-level2);
+  --shadow-elevation-3: var(--md-sys-elevation-level3);
+  --shadow-elevation-4: var(--md-sys-elevation-level4);
+  --shadow-elevation-5: var(--md-sys-elevation-level5);
+  --shadow-soft: var(--app-shadow-soft);
+  --shadow-float: var(--app-shadow-float);
+  --shadow-stage: var(--app-shadow-stage);
+
+  /* Motion → ease-standard, ease-emphasized, … */
+  --ease-standard: var(--md-sys-motion-easing-standard);
+  --ease-emphasized: var(--md-sys-motion-easing-emphasized);
+  --ease-emphasized-decelerate: var(--md-sys-motion-easing-emphasized-decelerate);
+  --ease-emphasized-accelerate: var(--md-sys-motion-easing-emphasized-accelerate);
+
+  /* Layout → max-w-page;  effects → backdrop-blur-glass */
+  --container-page: var(--app-page-max-width);
+  --blur-glass: var(--app-glass-blur);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Typography utilities: type-display-lg … type-label-sm, type-hero ── */
+@utility type-display-lg {
+  font-family: var(--md-sys-typescale-display-large-font);
+  font-size: var(--md-sys-typescale-display-large-size);
+  line-height: var(--md-sys-typescale-display-large-line-height);
+  font-weight: var(--md-sys-typescale-display-large-weight);
+  letter-spacing: var(--md-sys-typescale-display-large-tracking);
+}
+@utility type-display-md {
+  font-family: var(--md-sys-typescale-display-medium-font);
+  font-size: var(--md-sys-typescale-display-medium-size);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  font-weight: var(--md-sys-typescale-display-medium-weight);
+  letter-spacing: var(--md-sys-typescale-display-medium-tracking);
+}
+@utility type-display-sm {
+  font-family: var(--md-sys-typescale-display-small-font);
+  font-size: var(--md-sys-typescale-display-small-size);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  letter-spacing: var(--md-sys-typescale-display-small-tracking);
+}
+@utility type-headline-lg {
+  font-family: var(--md-sys-typescale-headline-large-font);
+  font-size: var(--md-sys-typescale-headline-large-size);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+  font-weight: var(--md-sys-typescale-headline-large-weight);
+  letter-spacing: var(--md-sys-typescale-headline-large-tracking);
+}
+@utility type-headline-md {
+  font-family: var(--md-sys-typescale-headline-medium-font);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+}
+@utility type-headline-sm {
+  font-family: var(--md-sys-typescale-headline-small-font);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+}
+@utility type-title-lg {
+  font-family: var(--md-sys-typescale-title-large-font);
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  letter-spacing: var(--md-sys-typescale-title-large-tracking);
+}
+@utility type-title-md {
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+}
+@utility type-title-sm {
+  font-family: var(--md-sys-typescale-title-small-font);
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+}
+@utility type-body-lg {
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+}
+@utility type-body-md {
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+}
+@utility type-body-sm {
+  font-family: var(--md-sys-typescale-body-small-font);
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  letter-spacing: var(--md-sys-typescale-body-small-tracking);
+}
+@utility type-label-lg {
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+@utility type-label-md {
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+}
+@utility type-label-sm {
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+}
+@utility type-hero {
+  font-family: var(--app-typescale-hero-font);
+  font-size: var(--app-typescale-hero-size);
+  line-height: var(--app-typescale-hero-line-height);
+  font-weight: var(--app-typescale-hero-weight);
+  letter-spacing: var(--app-typescale-hero-tracking);
+}
+
+/* ── Motion duration utilities ── */
+@utility duration-short2 {
+  transition-duration: var(--md-sys-motion-duration-short2);
+}
+@utility duration-short4 {
+  transition-duration: var(--md-sys-motion-duration-short4);
+}
+@utility duration-medium2 {
+  transition-duration: var(--md-sys-motion-duration-medium2);
+}
+@utility duration-medium4 {
+  transition-duration: var(--md-sys-motion-duration-medium4);
+}
+@utility duration-long2 {
+  transition-duration: var(--md-sys-motion-duration-long2);
+}
+
+/* ── State layer: M3 hover/focus/pressed overlay in currentColor ── */
+@utility state-layer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: currentColor;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--md-sys-motion-duration-short2) linear;
+  }
+  &:hover::before {
+    opacity: var(--md-sys-state-hover-opacity);
+  }
+  &:focus-visible::before {
+    opacity: var(--md-sys-state-focus-opacity);
+  }
+  &:active::before {
+    opacity: var(--md-sys-state-pressed-opacity);
+  }
+  &:where(:disabled, [data-disabled])::before {
+    opacity: 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Surfaces with effects ── */
+@utility glass {
+  background: var(--app-glass-bg);
+  border: 1px solid var(--app-glass-border);
+  box-shadow: var(--app-shadow-float);
+  backdrop-filter: blur(var(--app-glass-blur)) saturate(1.5);
+  -webkit-backdrop-filter: blur(var(--app-glass-blur)) saturate(1.5);
+}
+@utility glass-inverse {
+  background: var(--app-glass-inverse-bg);
+  border: 1px solid var(--app-glass-inverse-border);
+  color: var(--md-sys-color-inverse-on-surface);
+  box-shadow: var(--app-shadow-float);
+  backdrop-filter: blur(var(--app-glass-blur)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--app-glass-blur)) saturate(1.4);
+}
+@utility stage-checkerboard {
+  background-color: var(--app-stage-a);
+  background-image:
+    linear-gradient(45deg, var(--app-stage-b) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--app-stage-b) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--app-stage-b) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--app-stage-b) 75%);
+  background-size: 20px 20px;
+  background-position:
+    0 0,
+    0 10px,
+    10px -10px,
+    -10px 0;
+}
+@utility gap-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgb(255 255 255 / 0.16) 0 4px,
+    transparent 4px 8px
+  );
+}
+
+/* ═══════════════════════════ Base ═══════════════════════════ */
+@layer base {
+  html {
+    color-scheme: light;
+    /* lets widths animate to/from fit-content (compact header island) */
+    interpolate-size: allow-keywords;
+  }
+  body {
+    /* iOS 26+: lets Base UI backdrops cover the full visual viewport */
+    position: relative;
+    color: var(--md-sys-color-on-surface);
+    background:
+      radial-gradient(60rem 40rem at 0% -10%, var(--app-glow-1) 0%, transparent 60%),
+      radial-gradient(50rem 36rem at 100% 0%, var(--app-glow-2) 0%, transparent 55%),
+      radial-gradient(40rem 30rem at 50% 110%, var(--app-glow-3) 0%, transparent 60%),
+      var(--md-sys-color-background);
+    background-attachment: fixed;
+  }
+  /* Base UI portals: popups always above page content */
+  .app-root {
+    isolation: isolate;
+  }
+  :focus-visible {
+    outline: var(--app-focus-ring-width) solid var(--app-focus-ring-color);
+    outline-offset: var(--app-focus-ring-offset);
+  }
+  ::selection {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+}
+
+/* ═══════════════════════════ Motion ═══════════════════════════ */
+@keyframes flash-cycle {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  4% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  23% {
+    opacity: 1;
+  }
+  27% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.flash-layer {
+  animation: flash-cycle 6s var(--md-sys-motion-easing-emphasized) infinite;
+  opacity: 0;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .flash-layer {
+    animation: none !important;
+    opacity: 0;
+  }
+  .flash-layer:first-child {
+    opacity: 1;
+  }
 }

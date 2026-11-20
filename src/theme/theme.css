@@ -1,0 +1,318 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   THEME TOKENS — the one file to edit to re-skin the whole site.
+
+   Structure (Material 3 token architecture):
+     1. Seeds            5 colours. Change these → every colour role re-derives.
+     2. Colour roles     --md-sys-color-*   (derived from seeds; any role can be
+                         overridden with a literal value)
+     3. Typography       --md-sys-typescale-*   (fonts are loaded in fonts.ts)
+     4. Shape            --md-sys-shape-corner-*  (+ one global roundness knob)
+     5. Elevation        --md-sys-elevation-level*
+     6. Motion           --md-sys-motion-*
+     7. State            --md-sys-state-*
+     8. App extras       --app-*  (glass, glows, illustration colours…)
+     9. Presets          [data-theme="…"] blocks: alternate seed sets
+
+   Components never use raw colours/sizes; they read these tokens through
+   Tailwind utilities (bg-primary, type-title-md, rounded-2xl, shadow-elevation-1…)
+   mapped in src/app/globals.css.
+
+   HOW TO CHANGE THE THEME
+     • Quick: edit the seed colours in section 1.
+     • Exact: paste a Material Theme Builder export (--md-sys-color-* names
+       match) into section 2 to override individual roles.
+     • Scoped: put data-theme="ocean" on any element (or <html>) to apply a
+       preset to just that subtree.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. SEEDS ─────────────────────────────────────────────────────────── */
+:root {
+  --seed-primary: #ff8a4c; /* brand, main actions          (coral)  */
+  --seed-secondary: #e8798a; /* selection, soft accents      (pink)   */
+  --seed-tertiary: #a6d63a; /* highlights, badges           (lime)   */
+  --seed-info: #5b9df0; /* informational accents        (blue)   */
+  --seed-error: #ba1a1a; /* errors, recording            (red)    */
+  --seed-neutral: var(--seed-primary); /* tint used for surfaces + text */
+}
+
+/* ── 2. COLOUR ROLES (derived) ─────────────────────────────────────────
+   oklch(from <seed> L min(c, MAX) h): keeps the seed's hue, sets the
+   lightness for the role and caps chroma so roles stay calm.           */
+:root,
+[data-theme] {
+  /* Primary */
+  --md-sys-color-primary: oklch(from var(--seed-primary) 0.51 min(c, 0.15) h);
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: oklch(from var(--seed-primary) 0.78 min(c, 0.145) h);
+  --md-sys-color-on-primary-container: oklch(from var(--seed-primary) 0.21 min(c, 0.06) h);
+  --md-sys-color-inverse-primary: oklch(from var(--seed-primary) 0.84 min(c, 0.1) h);
+
+  /* Secondary */
+  --md-sys-color-secondary: oklch(from var(--seed-secondary) 0.49 min(c, 0.09) h);
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: oklch(from var(--seed-secondary) 0.92 min(c, 0.045) h);
+  --md-sys-color-on-secondary-container: oklch(from var(--seed-secondary) 0.235 min(c, 0.08) h);
+
+  /* Tertiary */
+  --md-sys-color-tertiary: oklch(from var(--seed-tertiary) 0.46 min(c, 0.115) h);
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: oklch(from var(--seed-tertiary) 0.915 min(c, 0.13) h);
+  --md-sys-color-on-tertiary-container: oklch(from var(--seed-tertiary) 0.225 min(c, 0.056) h);
+
+  /* Info (custom role, not in stock M3) */
+  --md-sys-color-info: oklch(from var(--seed-info) 0.5 min(c, 0.12) h);
+  --md-sys-color-info-container: oklch(from var(--seed-info) 0.915 min(c, 0.045) h);
+  --md-sys-color-on-info-container: oklch(from var(--seed-info) 0.225 min(c, 0.06) h);
+
+  /* Error */
+  --md-sys-color-error: oklch(from var(--seed-error) 0.5 min(c, 0.19) h);
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: oklch(from var(--seed-error) 0.93 min(c, 0.045) h);
+  --md-sys-color-on-error-container: oklch(from var(--seed-error) 0.27 min(c, 0.1) h);
+
+  /* Surfaces & text (neutral) */
+  --md-sys-color-surface: oklch(from var(--seed-neutral) 0.984 min(c, 0.008) h);
+  --md-sys-color-surface-dim: oklch(from var(--seed-neutral) 0.897 min(c, 0.028) h);
+  --md-sys-color-surface-bright: var(--md-sys-color-surface);
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: oklch(from var(--seed-neutral) 0.966 min(c, 0.017) h);
+  --md-sys-color-surface-container: oklch(from var(--seed-neutral) 0.943 min(c, 0.023) h);
+  --md-sys-color-surface-container-high: oklch(from var(--seed-neutral) 0.916 min(c, 0.029) h);
+  --md-sys-color-surface-container-highest: oklch(from var(--seed-neutral) 0.896 min(c, 0.031) h);
+  --md-sys-color-on-surface: oklch(from var(--seed-neutral) 0.226 min(c, 0.019) h);
+  --md-sys-color-on-surface-variant: oklch(from var(--seed-neutral) 0.4 min(c, 0.033) h);
+  --md-sys-color-outline: oklch(from var(--seed-neutral) 0.57 min(c, 0.035) h);
+  --md-sys-color-outline-variant: oklch(from var(--seed-neutral) 0.83 min(c, 0.038) h);
+  --md-sys-color-inverse-surface: oklch(from var(--seed-neutral) 0.272 min(c, 0.011) h);
+  --md-sys-color-inverse-on-surface: oklch(from var(--seed-neutral) 0.957 min(c, 0.018) h);
+  --md-sys-color-background: var(--md-sys-color-surface);
+  --md-sys-color-on-background: var(--md-sys-color-on-surface);
+  --md-sys-color-shadow: oklch(from var(--seed-neutral) 0.2 min(c, 0.03) h);
+  --md-sys-color-scrim: #000000;
+
+  /* ── 4. SHAPE ─ corner radii; --app-roundness scales them all (0 = square) */
+  --app-roundness: 1;
+  --md-sys-shape-corner-extra-small: calc(4px * var(--app-roundness));
+  --md-sys-shape-corner-small: calc(8px * var(--app-roundness));
+  --md-sys-shape-corner-medium: calc(12px * var(--app-roundness));
+  --md-sys-shape-corner-large: calc(16px * var(--app-roundness));
+  --md-sys-shape-corner-large-increased: calc(20px * var(--app-roundness));
+  --md-sys-shape-corner-extra-large: calc(28px * var(--app-roundness));
+  --md-sys-shape-corner-extra-large-increased: calc(32px * var(--app-roundness));
+  --md-sys-shape-corner-extra-extra-large: calc(48px * var(--app-roundness));
+  --md-sys-shape-corner-full: 9999px;
+
+  /* ── 8. APP EXTRAS (colour) ─ illustration + effects, derived from seeds */
+  --app-glow-1: var(--md-sys-color-secondary-container);
+  --app-glow-2: oklch(from var(--seed-primary) 0.93 min(c, 0.045) h);
+  --app-glow-3: oklch(from var(--seed-info) 0.94 min(c, 0.04) calc(h + 60));
+  --app-glow-4: oklch(from var(--seed-tertiary) 0.95 min(c, 0.08) h);
+
+  --app-glass-bg: rgb(255 255 255 / 0.55);
+  --app-glass-border: rgb(255 255 255 / 0.8);
+  --app-glass-inverse-bg: oklch(from var(--md-sys-color-inverse-surface) l c h / 0.78);
+  --app-glass-inverse-border: rgb(255 255 255 / 0.18);
+
+  --app-brand-gradient: linear-gradient(
+    135deg,
+    var(--md-sys-color-primary-container),
+    oklch(from var(--seed-secondary) 0.72 min(c, 0.16) h)
+  );
+
+  /* "Photos" that flash in the home hero */
+  --app-art-1:
+    radial-gradient(circle at 70% 30%, oklch(from var(--seed-tertiary) 0.96 0.06 90) 0 14%, transparent 15%),
+    linear-gradient(160deg, var(--md-sys-color-primary-container) 0%, oklch(from var(--seed-primary) 0.65 0.18 h) 55%, oklch(from var(--seed-secondary) 0.42 0.12 h) 100%);
+  --app-art-2:
+    radial-gradient(circle at 30% 35%, rgb(255 255 255 / 0.65) 0 10%, transparent 11%),
+    linear-gradient(200deg, var(--md-sys-color-tertiary-container) 0%, oklch(from var(--seed-tertiary) 0.7 0.13 calc(h + 15)) 55%, oklch(from var(--seed-tertiary) 0.42 0.08 calc(h + 50)) 100%);
+  --app-art-3:
+    radial-gradient(ellipse at 50% 120%, rgb(255 255 255 / 0.4) 0 30%, transparent 31%),
+    linear-gradient(180deg, var(--md-sys-color-info-container) 0%, oklch(from var(--seed-info) 0.66 0.14 h) 60%, oklch(from var(--seed-info) 0.36 0.14 h) 100%);
+  --app-art-4:
+    radial-gradient(circle at 40% 60%, var(--md-sys-color-secondary-container) 0 18%, transparent 19%),
+    linear-gradient(140deg, var(--md-sys-color-secondary-container) 0%, oklch(from var(--seed-secondary) 0.72 0.11 h) 50%, oklch(from var(--seed-secondary) 0.36 0.1 calc(h - 15)) 100%);
+
+  /* Video preview stage (checkerboard behind the canvas) */
+  --app-stage-a: oklch(from var(--md-sys-color-inverse-surface) calc(l - 0.04) c h);
+  --app-stage-b: var(--md-sys-color-inverse-surface);
+}
+
+:root {
+  /* ── 3. TYPOGRAPHY ─────────────────────────────────────────────────────
+     Families come from fonts.ts (--font-brand = pixel, --font-plain = sans). */
+  --md-ref-typeface-brand: var(--font-brand), ui-monospace, monospace;
+  --md-ref-typeface-plain: var(--font-plain), ui-sans-serif, system-ui, sans-serif;
+
+  /* Display: brand pixel face, fluid sizes */
+  --md-sys-typescale-display-large-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-large-size: clamp(2.5rem, 6vw, 3.5625rem);
+  --md-sys-typescale-display-large-line-height: 0.95;
+  --md-sys-typescale-display-large-weight: 700;
+  --md-sys-typescale-display-large-tracking: -0.02em;
+
+  --md-sys-typescale-display-medium-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-medium-size: clamp(1.75rem, 4.5vw, 2.25rem);
+  --md-sys-typescale-display-medium-line-height: 1;
+  --md-sys-typescale-display-medium-weight: 700;
+  --md-sys-typescale-display-medium-tracking: -0.01em;
+
+  --md-sys-typescale-display-small-font: var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-small-size: 1.5rem;
+  --md-sys-typescale-display-small-line-height: 1.1;
+  --md-sys-typescale-display-small-weight: 400;
+  --md-sys-typescale-display-small-tracking: 0;
+
+  /* Headline */
+  --md-sys-typescale-headline-large-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-headline-large-size: 2rem;
+  --md-sys-typescale-headline-large-line-height: 2.5rem;
+  --md-sys-typescale-headline-large-weight: 700;
+  --md-sys-typescale-headline-large-tracking: -0.01em;
+
+  --md-sys-typescale-headline-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-headline-medium-size: 1.75rem;
+  --md-sys-typescale-headline-medium-line-height: 2.25rem;
+  --md-sys-typescale-headline-medium-weight: 700;
+  --md-sys-typescale-headline-medium-tracking: -0.01em;
+
+  --md-sys-typescale-headline-small-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-headline-small-size: 1.5rem;
+  --md-sys-typescale-headline-small-line-height: 2rem;
+  --md-sys-typescale-headline-small-weight: 700;
+  --md-sys-typescale-headline-small-tracking: 0;
+
+  /* Title */
+  --md-sys-typescale-title-large-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-title-large-size: 1.125rem;
+  --md-sys-typescale-title-large-line-height: 1.625rem;
+  --md-sys-typescale-title-large-weight: 700;
+  --md-sys-typescale-title-large-tracking: 0;
+
+  --md-sys-typescale-title-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-title-medium-size: 1rem;
+  --md-sys-typescale-title-medium-line-height: 1.5rem;
+  --md-sys-typescale-title-medium-weight: 700;
+  --md-sys-typescale-title-medium-tracking: 0.01em;
+
+  --md-sys-typescale-title-small-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-title-small-size: 0.875rem;
+  --md-sys-typescale-title-small-line-height: 1.25rem;
+  --md-sys-typescale-title-small-weight: 600;
+  --md-sys-typescale-title-small-tracking: 0.01em;
+
+  /* Body */
+  --md-sys-typescale-body-large-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-large-size: 1rem;
+  --md-sys-typescale-body-large-line-height: 1.5rem;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-tracking: 0;
+
+  --md-sys-typescale-body-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-medium-size: 0.875rem;
+  --md-sys-typescale-body-medium-line-height: 1.25rem;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-tracking: 0;
+
+  --md-sys-typescale-body-small-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-small-size: 0.75rem;
+  --md-sys-typescale-body-small-line-height: 1rem;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-tracking: 0.01em;
+
+  /* Label */
+  --md-sys-typescale-label-large-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-large-size: 0.875rem;
+  --md-sys-typescale-label-large-line-height: 1.25rem;
+  --md-sys-typescale-label-large-weight: 600;
+  --md-sys-typescale-label-large-tracking: 0.01em;
+
+  --md-sys-typescale-label-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-medium-size: 0.75rem;
+  --md-sys-typescale-label-medium-line-height: 1rem;
+  --md-sys-typescale-label-medium-weight: 600;
+  --md-sys-typescale-label-medium-tracking: 0.02em;
+
+  --md-sys-typescale-label-small-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-small-size: 0.6875rem;
+  --md-sys-typescale-label-small-line-height: 1rem;
+  --md-sys-typescale-label-small-weight: 600;
+  --md-sys-typescale-label-small-tracking: 0.03em;
+
+  /* Expressive: the giant home-page wordmark */
+  --app-typescale-hero-font: var(--md-ref-typeface-brand);
+  --app-typescale-hero-size: clamp(2.6rem, 10.5vw, 8.25rem);
+  --app-typescale-hero-line-height: 0.9;
+  --app-typescale-hero-weight: 700;
+  --app-typescale-hero-tracking: -0.05em;
+
+  /* ── 5. ELEVATION ─────────────────────────────────────────────────── */
+  --md-sys-elevation-level0: none;
+  --md-sys-elevation-level1:
+    0 1px 2px 0 color-mix(in srgb, var(--md-sys-color-shadow) 30%, transparent),
+    0 1px 3px 1px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent);
+  --md-sys-elevation-level2:
+    0 1px 2px 0 color-mix(in srgb, var(--md-sys-color-shadow) 30%, transparent),
+    0 2px 6px 2px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent);
+  --md-sys-elevation-level3:
+    0 1px 3px 0 color-mix(in srgb, var(--md-sys-color-shadow) 30%, transparent),
+    0 4px 8px 3px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent);
+  --md-sys-elevation-level4:
+    0 2px 3px 0 color-mix(in srgb, var(--md-sys-color-shadow) 30%, transparent),
+    0 6px 10px 4px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent);
+  --md-sys-elevation-level5:
+    0 4px 4px 0 color-mix(in srgb, var(--md-sys-color-shadow) 30%, transparent),
+    0 8px 12px 6px color-mix(in srgb, var(--md-sys-color-shadow) 15%, transparent);
+  /* Soft, diffuse shadows for floating glass UI */
+  --app-shadow-soft: 0 10px 30px -14px color-mix(in srgb, var(--md-sys-color-shadow) 40%, transparent);
+  --app-shadow-float: 0 18px 50px -20px color-mix(in srgb, var(--md-sys-color-shadow) 45%, transparent);
+  --app-shadow-stage: 0 20px 60px -20px rgb(0 0 0 / 0.8);
+
+  /* ── 6. MOTION ────────────────────────────────────────────────────── */
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --md-sys-motion-duration-short2: 100ms;
+  --md-sys-motion-duration-short4: 200ms;
+  --md-sys-motion-duration-medium2: 300ms;
+  --md-sys-motion-duration-medium4: 400ms;
+  --md-sys-motion-duration-long2: 500ms;
+
+  /* ── 7. STATE ─────────────────────────────────────────────────────── */
+  --md-sys-state-hover-opacity: 0.08;
+  --md-sys-state-focus-opacity: 0.1;
+  --md-sys-state-pressed-opacity: 0.12;
+  --md-sys-state-dragged-opacity: 0.16;
+  --md-sys-state-disabled-opacity: 0.38;
+  --app-focus-ring-width: 3px;
+  --app-focus-ring-offset: 2px;
+  --app-focus-ring-color: var(--md-sys-color-primary);
+
+  /* ── 8. APP EXTRAS (layout + effects) ─────────────────────────────── */
+  --app-page-max-width: 80rem;
+  --app-glass-blur: 22px;
+}
+
+/* ── 9. PRESETS ─ alternate seed sets. Use: <html data-theme="ocean"> ── */
+[data-theme="ocean"] {
+  --seed-primary: #2f86e8;
+  --seed-secondary: #4fb0c6;
+  --seed-tertiary: #f2b23a;
+  --seed-info: #7c6cf0;
+  --seed-neutral: #6a8cad;
+}
+[data-theme="grape"] {
+  --seed-primary: #9a5cf0;
+  --seed-secondary: #e070c8;
+  --seed-tertiary: #3ccfa6;
+  --seed-info: #4f94ef;
+  --seed-neutral: #8a72b8;
+}
+[data-theme="forest"] {
+  --seed-primary: #3f9a55;
+  --seed-secondary: #b7a24a;
+  --seed-tertiary: #f08a5c;
+  --seed-info: #4f94ef;
+  --seed-neutral: #6f8f6f;
+}

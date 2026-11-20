@@ -32,6 +32,9 @@ export const metadata: Metadata = {
     description: SITE.description,
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "9utkPqfyxABf3rYfEAIfrGz4gdyLQZHNin2WKKq11SQ",
+  },
 };
 
 export const viewport: Viewport = {
